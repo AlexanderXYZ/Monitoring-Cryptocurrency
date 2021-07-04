@@ -1,0 +1,2 @@
+rootProject.name = "Monitoring Cryptocurrency"
+include ':app'
