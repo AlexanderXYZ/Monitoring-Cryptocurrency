@@ -54,10 +54,32 @@ class CryptoAdapter(
         holder.itemView.apply {
             title_crypto.text = currentCrypto.symbol
             price_crypto.text = String.format("%.5f", currentCrypto.metrics.market_data.price_usd)
+            //Expand view
+            expand_crypto.setOnClickListener {
+                val viewLl = hidden_view_ll
+                if (viewLl.visibility == View.VISIBLE) {
+                    viewLl.visibility = View.GONE
+                    expand_crypto.setImageResource(R.drawable.ic_expand_more)
+                } else {
+                    viewLl.visibility = View.VISIBLE
+                    expand_crypto.setImageResource(R.drawable.ic_expand_less)
+                }
+                //onItemClickListener?.let { it(currentCrypto) }
+            }
+            crypto_metrics.setOnClickListener {
+
+            }
+            crypto_profile.setOnClickListener { }
         }
     }
 
     override fun getItemCount(): Int {
         return differ.currentList.size
+    }
+
+    private var onItemClickListener: ((Data) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (Data) -> Unit) {
+        onItemClickListener = listener
     }
 }
