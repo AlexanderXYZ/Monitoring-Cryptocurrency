@@ -11,4 +11,7 @@
     <string name="default_news_title">Weekly Recap Ending July 1st</string>
     <string name="default_author">Mira Christanto</string>
     <string name="default_read_more">Read more</string>
+    <string name="profile_default_name">Bitcoin</string>
+    <string name="profile_default_overview">Default overview</string>
+    <string name="profile_dafault_history">Default history</string>
 </resources>

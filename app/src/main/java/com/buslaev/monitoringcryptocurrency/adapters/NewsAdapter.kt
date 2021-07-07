@@ -1,5 +1,6 @@
 package com.buslaev.monitoringcryptocurrency.adapters
 
+import android.app.ActionBar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,11 +28,20 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
             news_published_time.text = currentItem.published_at
             val content = currentItem.content
             news_content.text = content
-            news_read_more.setOnClickListener {
-//                news_content_full.visibility = View.VISIBLE
-//                news_content.visibility = View.GONE
-//                news_content_full.text = content
 
+            // i think about add double click listener
+
+            news_read_more.setOnClickListener {
+
+                val params:ViewGroup.LayoutParams = news_content.layoutParams
+                if (params.height == ViewGroup.LayoutParams.MATCH_PARENT){
+                    params.height = 250
+                    news_content.layoutParams = params
+                } else {
+                    params.height = ViewGroup.LayoutParams.MATCH_PARENT
+                    news_content.layoutParams = params
+
+                }
 
                 onItemClickListener?.let { it(currentItem) }
             }

@@ -45,6 +45,7 @@ class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
         //InitTimer
         updateCrypto()
 
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -1,5 +1,6 @@
 package com.buslaev.monitoringcryptocurrency.adapters
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.buslaev.monitoringcryptocurrency.R
 import com.buslaev.monitoringcryptocurrency.models.allCrypto.Data
+import com.buslaev.monitoringcryptocurrency.utilits.APP_ACTIVITY
 import kotlinx.android.synthetic.main.crypto_item.view.*
 
 class CryptoAdapter(
@@ -69,7 +71,14 @@ class CryptoAdapter(
             crypto_metrics.setOnClickListener {
 
             }
-            crypto_profile.setOnClickListener { }
+            crypto_profile.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString("symbol", currentCrypto.symbol)
+                APP_ACTIVITY.navController.navigate(
+                    R.id.action_allCryptoFragment_to_profileFragment,
+                    bundle
+                )
+            }
         }
     }
 
