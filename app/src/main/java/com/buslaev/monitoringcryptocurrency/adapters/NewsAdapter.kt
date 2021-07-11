@@ -1,12 +1,14 @@
 package com.buslaev.monitoringcryptocurrency.adapters
 
-import android.app.ActionBar
+
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.buslaev.monitoringcryptocurrency.R
 import com.buslaev.monitoringcryptocurrency.models.news.Data
+import com.buslaev.monitoringcryptocurrency.screens.news.NewsCurrentItem
 import kotlinx.android.synthetic.main.news_item.view.*
 
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
@@ -22,27 +24,28 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val currentItem = mList[position]
+        val newsCurrentItem = NewsCurrentItem(currentItem)
+
         holder.itemView.apply {
-            news_title.text = currentItem.title
-            news_author.text = currentItem.author.name
-            news_published_time.text = currentItem.published_at
-            val content = currentItem.content
-            news_content.text = content
+            news_title.text = newsCurrentItem.title
+            news_author.text = newsCurrentItem.author
+            news_published_time.text = newsCurrentItem.date
 
-            // i think about add double click listener
-
-            news_read_more.setOnClickListener {
-
-                val params:ViewGroup.LayoutParams = news_content.layoutParams
-                if (params.height == ViewGroup.LayoutParams.MATCH_PARENT){
-                    params.height = 250
-                    news_content.layoutParams = params
-                } else {
-                    params.height = ViewGroup.LayoutParams.MATCH_PARENT
-                    news_content.layoutParams = params
-
-                }
-
+//            val oldParams:ViewGroup.LayoutParams = news_content.layoutParams
+//            news_read_more.setOnClickListener {
+//
+//                val params:ViewGroup.LayoutParams = news_content.layoutParams
+//
+//                if (params.height == ViewGroup.LayoutParams.MATCH_PARENT){
+//                    params.height = 250
+//                    news_content.layoutParams = params
+//                } else {
+//                    params.height = ViewGroup.LayoutParams.MATCH_PARENT
+//                    news_content.layoutParams = params
+//                }
+//                onItemClickListener?.let { it(currentItem) }
+//            }
+            news_item_current.setOnClickListener {
                 onItemClickListener?.let { it(currentItem) }
             }
         }

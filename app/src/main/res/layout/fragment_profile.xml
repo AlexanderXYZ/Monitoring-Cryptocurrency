@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="2dp"
     tools:context=".screens.profile.ProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,7 +16,11 @@
             android:id="@+id/profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:text="@string/profile_default_name"
+            android:textColor="@color/less_black"
+            android:textSize="24sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -23,9 +28,12 @@
         <!-- Overview -->
         <TextView
             android:id="@+id/profile_overview"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="12dp"
             android:text="@string/profile_default_overview"
+            android:textColor="@color/gray"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/profile_name" />
@@ -35,6 +43,7 @@
             android:id="@+id/profile_history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="12dp"
             android:background="@drawable/background_items_profile"
             android:orientation="vertical"
             android:padding="6dp"
@@ -45,7 +54,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="History" />
+                android:text="History"
+                android:textColor="@color/less_black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/profile_history_description"
@@ -60,6 +72,7 @@
             android:id="@+id/profile_organizations"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="12dp"
             android:background="@drawable/background_items_profile"
             android:orientation="vertical"
             android:padding="6dp"
@@ -70,45 +83,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Organizations" />
+                android:text="Organizations"
+                android:textColor="@color/less_black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-            <LinearLayout
-                android:id="@+id/profile_organizations_name_hidden"
+            <ListView
+                android:id="@+id/profile_organizations_listView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="gone">
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                tools:listitem="@layout/organization_item" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Name: " />
-
-                <TextView
-                    android:id="@+id/profile_organizations_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hypothetical Bitcoin Foundation" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/profile_organizations_jurisdiction_hidden"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Jurisdiction: " />
-
-                <TextView
-                    android:id="@+id/profile_organizations_jurisdiction"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Switzerland, Europe" />
-            </LinearLayout>
         </LinearLayout>
 
         <!-- People -->
@@ -116,9 +102,11 @@
             android:id="@+id/profile_people"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="12dp"
             android:background="@drawable/background_items_profile"
             android:orientation="vertical"
             android:padding="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/profile_organizations">
@@ -126,7 +114,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="People" />
+                android:text="People"
+                android:textColor="@color/less_black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
 
             <ListView

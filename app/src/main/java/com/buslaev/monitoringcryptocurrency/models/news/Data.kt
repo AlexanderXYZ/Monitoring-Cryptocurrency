@@ -1,5 +1,7 @@
 package com.buslaev.monitoringcryptocurrency.models.news
 
+import java.io.Serializable
+
 data class Data(
     val author: Author,
     val content: String,
@@ -10,4 +12,4 @@ data class Data(
     val tags: List<String>,
     val title: String,
     val url: String
-)
+) : Serializable

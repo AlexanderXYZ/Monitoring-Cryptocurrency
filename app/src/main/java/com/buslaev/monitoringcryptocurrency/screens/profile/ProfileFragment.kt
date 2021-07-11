@@ -1,22 +1,27 @@
 package com.buslaev.monitoringcryptocurrency.screens.profile
 
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
+import android.text.Spanned
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.buslaev.monitoringcryptocurrency.R
+import com.buslaev.monitoringcryptocurrency.adapters.OrganizationAdapter
 import com.buslaev.monitoringcryptocurrency.databinding.FragmentProfileBinding
 import com.buslaev.monitoringcryptocurrency.models.profile.ProfileResponce
+import com.buslaev.monitoringcryptocurrency.utilits.APP_ACTIVITY
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
 
 
 class ProfileFragment : Fragment() {
 
-    private lateinit var mViewModel: ProflieViewModel
+    private lateinit var mViewModel: ProfileViewModel
     private lateinit var mObserver: Observer<Resource<ProfileResponce>>
 
     private var _binding: FragmentProfileBinding? = null
@@ -35,7 +40,7 @@ class ProfileFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        mViewModel = ViewModelProvider(this).get(ProflieViewModel::class.java)
+        mViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
         val symbol: String = arguments?.getString("symbol") ?: "btc"
         mViewModel.getProfile(symbol)
 
@@ -56,13 +61,11 @@ class ProfileFragment : Fragment() {
         }
         //Organization
         mBinding.profileOrganizations.setOnClickListener {
-            val view = mBinding.profileOrganizationsNameHidden
+            val view = mBinding.profileOrganizationsListView
             if (view.visibility == View.GONE) {
                 view.visibility = View.VISIBLE
-                mBinding.profileOrganizationsJurisdictionHidden.visibility = View.VISIBLE
             } else {
                 view.visibility = View.GONE
-                mBinding.profileOrganizationsJurisdictionHidden.visibility = View.GONE
             }
         }
         //Contributors
@@ -80,13 +83,25 @@ class ProfileFragment : Fragment() {
         mObserver = Observer { response ->
             when (response) {
                 is Resource.Success -> {
-                    response.data?.let { profileResponce ->
-                        val profile = profileResponce.data
+                    response.data?.let { profileResponse ->
+                        val profile = profileResponse.data
+
                         mBinding.profileName.text = profile.name
-                        mBinding.profileOverview.text = profile.overview
-                        mBinding.profileHistoryDescription.text = profile.background
-//                        mBinding.profileOrganizationsName.text =
-//                            profile.organizations.elementAt(5).toString()
+
+                        val content = profile.overview
+                        mBinding.profileOverview.text = parseHtml(content)
+
+                        val history = profile.background
+                        mBinding.profileHistoryDescription.text = parseHtml(history)
+
+
+                        //Init organization list
+                        val organizationsList = profile.organizations
+                        val adapterOrg = OrganizationAdapter(requireContext(), organizationsList)
+                        mBinding.profileOrganizationsListView.adapter = adapterOrg
+
+
+//                        mBinding.profileOrganizationsName.text = profile.organizations
 //                        mBinding.profileOrganizationsJurisdiction.text =
 //                            profile.organizations.elementAt(3).toString()
                         //people
@@ -103,6 +118,14 @@ class ProfileFragment : Fragment() {
             }
         }
         mViewModel.data.observe(viewLifecycleOwner, mObserver)
+    }
+
+    private fun parseHtml(content: String): Spanned? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(content, Html.FROM_HTML_MODE_COMPACT)
+        } else {
+            Html.fromHtml(content)
+        }
     }
 
     override fun onDestroyView() {

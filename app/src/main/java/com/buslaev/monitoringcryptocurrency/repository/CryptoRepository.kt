@@ -11,7 +11,10 @@ class CryptoRepository(
 
     suspend fun getAllCrypto() = RetrofitInstance.api.getAllCrypto()
     suspend fun getNews() = RetrofitInstance.api.getNews()
+
+    //suspend fun getNewsCall() = RetrofitInstance.api.getNewsCall()
     suspend fun getProfileCrypto(symbol: String) = RetrofitInstance.api.getProfileCrypto(symbol)
+    suspend fun getMetricsCrypto(symbol: String) = RetrofitInstance.api.getMetrics(symbol)
 
     suspend fun insertData(data: Data) {
         dao.insert(data)

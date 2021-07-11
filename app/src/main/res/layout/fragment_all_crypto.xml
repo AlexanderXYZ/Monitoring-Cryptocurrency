@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.cryptos.AllCryptoFragment">
+    tools:context=".screens.cryptos.AllCryptoFragment"
+    android:background="@color/less_black">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cryptos_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:listitem="@layout/crypto_item"/>
 
     <ProgressBar
         android:id="@+id/loading_progressBar"

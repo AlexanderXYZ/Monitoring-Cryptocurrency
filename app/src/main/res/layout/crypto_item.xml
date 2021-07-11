@@ -9,36 +9,66 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/black">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/fixed_view"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="55dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/title_crypto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bitcoin"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/symbol_crypto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BTC"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+
             <TextView
-                android:id="@+id/title_crypto"
+                android:id="@+id/symbol_dollar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:text="BTC"
-                android:textColor="@color/black"
-                android:textSize="24sp"
+                android:text="$"
+                android:textColor="@color/white"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/price_crypto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
                 android:text="5313.03"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
+                app:layout_constraintStart_toEndOf="@id/symbol_dollar"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.Guideline
@@ -52,7 +82,7 @@
                 android:id="@+id/expand_crypto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="24sp"
+                android:layout_marginEnd="12sp"
                 android:src="@drawable/ic_expand_more"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -80,18 +110,19 @@
                 android:padding="8dp">
 
                 <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_marginStart="24dp"
                     android:src="@drawable/metrics" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="32dp"
+                    android:layout_height="24dp"
                     android:layout_marginStart="20dp"
                     android:gravity="center"
                     android:text="Metrics"
-                    android:textSize="24sp" />
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
 
             </LinearLayout>
 
@@ -103,18 +134,19 @@
                 android:padding="8dp">
 
                 <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_marginStart="24dp"
-                    android:src="@drawable/info" />
+                    android:src="@drawable/information" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="32dp"
+                    android:layout_height="24dp"
                     android:layout_marginStart="20dp"
                     android:gravity="center"
                     android:text="Info about crypto"
-                    android:textSize="24sp" />
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
 
             </LinearLayout>
         </LinearLayout>

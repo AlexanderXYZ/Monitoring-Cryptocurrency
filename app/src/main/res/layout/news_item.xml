@@ -10,7 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="12dp">
+        android:layout_margin="6dp"
+        android:id="@+id/news_item_current">
 
         <TextView
             android:id="@+id/news_title"
@@ -20,7 +21,7 @@
             android:textColor="@color/less_black"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/news_share_fab"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,31 +45,19 @@
             app:layout_constraintStart_toEndOf="@id/news_author"
             app:layout_constraintTop_toBottomOf="@id/news_title" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/news_share_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_share"
-            app:fabSize="mini"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/news_content"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginTop="16dp"
-            android:text="Week In Review\nThe current Granada proposal for Tezos has"
-            app:layout_constraintBottom_toTopOf="@id/news_read_more"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/news_published_time" />
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/news_share_fab"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/ic_share"-->
+<!--            app:fabSize="mini"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
 <!--        <TextView-->
-<!--            android:id="@+id/news_content_full"-->
-<!--            android:visibility="gone"-->
+<!--            android:id="@+id/news_content"-->
 <!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
+<!--            android:layout_height="150dp"-->
 <!--            android:layout_marginTop="16dp"-->
 <!--            android:text="Week In Review\nThe current Granada proposal for Tezos has"-->
 <!--            app:layout_constraintBottom_toTopOf="@id/news_read_more"-->
@@ -76,15 +65,16 @@
 <!--            app:layout_constraintStart_toStartOf="parent"-->
 <!--            app:layout_constraintTop_toBottomOf="@id/news_published_time" />-->
 
-        <TextView
-            android:id="@+id/news_read_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/default_read_more"
-            android:textColor="@color/blue"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+
+<!--        <TextView-->
+<!--            android:id="@+id/news_read_more"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/default_read_more"-->
+<!--            android:textColor="@color/blue"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

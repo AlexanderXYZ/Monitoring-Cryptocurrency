@@ -9,7 +9,7 @@
         android:id="@+id/allCryptoFragment"
         android:name="com.buslaev.monitoringcryptocurrency.screens.cryptos.AllCryptoFragment"
         android:label="fragment_all_crypto"
-        tools:layout="@layout/fragment_all_crypto" >
+        tools:layout="@layout/fragment_all_crypto">
         <action
             android:id="@+id/action_allCryptoFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
@@ -21,12 +21,21 @@
         android:id="@+id/newsFragment"
         android:name="com.buslaev.monitoringcryptocurrency.screens.news.NewsFragment"
         android:label="fragment_news"
-        tools:layout="@layout/fragment_news" />
+        tools:layout="@layout/fragment_news">
+        <action
+            android:id="@+id/action_newsFragment_to_webNewsFragment"
+            app:destination="@id/webNewsFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/slide_out_top"
+            app:popEnterAnim="@anim/slide_in_top"
+            app:popExitAnim="@anim/slide_out_bottom"
+            app:popUpTo="@id/newsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.buslaev.monitoringcryptocurrency.screens.profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profileFragment_to_allCryptoFragment"
             app:destination="@id/allCryptoFragment" />
@@ -35,9 +44,22 @@
         android:id="@+id/metricsFragment"
         android:name="com.buslaev.monitoringcryptocurrency.screens.metrics.MetricsFragment"
         android:label="fragment_metrics"
-        tools:layout="@layout/fragment_metrics" >
+        tools:layout="@layout/fragment_metrics">
         <action
             android:id="@+id/action_metricsFragment_to_allCryptoFragment"
             app:destination="@id/allCryptoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/webNewsFragment"
+        android:name="com.buslaev.monitoringcryptocurrency.screens.news.WebNewsFragment"
+        android:label="fragment_web_news"
+        tools:layout="@layout/fragment_web_news">
+        <action
+            android:id="@+id/action_webNewsFragment_to_newsFragment"
+            app:destination="@id/newsFragment"
+            app:popUpTo="@id/newsFragment" />
+        <argument
+            android:name="newsData"
+            app:argType="com.buslaev.monitoringcryptocurrency.models.news.Data" />
     </fragment>
 </navigation>

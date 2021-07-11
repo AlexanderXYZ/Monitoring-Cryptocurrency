@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="2dp"
+    android:elevation="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="6dp">
+
+        <LinearLayout
+            android:id="@+id/profile_organizations_name_hidden"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name: "
+                android:textColor="@color/less_black" />
+
+            <TextView
+                android:id="@+id/profile_organizations_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hypothetical Bitcoin Foundation" />
+        </LinearLayout>
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/profile_organizations_jurisdiction_hidden"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="6dp"-->
+<!--            android:orientation="horizontal"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/profile_organizations_name_hidden">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Jurisdiction: "-->
+<!--                android:textColor="@color/less_black" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/profile_organizations_jurisdiction"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Switzerland, Europe" />-->
+<!--        </LinearLayout>-->
+
+        <LinearLayout
+            android:id="@+id/profile_organizations_description_hidden"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_organizations_name_hidden">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description: "
+                android:textColor="@color/less_black" />
+
+            <TextView
+                android:id="@+id/profile_organizations_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="description" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

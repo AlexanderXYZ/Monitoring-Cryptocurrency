@@ -34,18 +34,23 @@ class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
         return inflater.inflate(R.layout.fragment_all_crypto, container, false)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initializations()
+    }
+
+    private fun initializations() {
+        mViewModel = ViewModelProvider(this).get(CryptoViewModel::class.java)
+        mAdapter = CryptoAdapter(this)
+    }
+
     override fun onStart() {
         super.onStart()
         setHasOptionsMenu(true)
-        mViewModel = ViewModelProvider(this).get(CryptoViewModel::class.java)
-        mViewModel.getAllCrypto()
 
         initRecyclerView()
-
         //InitTimer
         updateCrypto()
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -74,10 +79,10 @@ class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
     }
 
     private fun initRecyclerView() {
-        mAdapter = CryptoAdapter(this)
         cryptos_recyclerView.apply {
             adapter = mAdapter
             layoutManager = LinearLayoutManager(activity)
+            itemAnimator?.changeDuration = 0
         }
 
         mObserver = Observer { response ->
@@ -94,7 +99,7 @@ class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
                     }
                 }
                 is Resource.Loading -> {
-                    loading_progressBar.visibility = View.VISIBLE
+//                    loading_progressBar.visibility = View.VISIBLE
                 }
             }
         }

@@ -5,21 +5,25 @@ import androidx.lifecycle.*
 import com.buslaev.monitoringcryptocurrency.db.CryptoDatabase
 import com.buslaev.monitoringcryptocurrency.models.allCrypto.CryptoResponse
 import com.buslaev.monitoringcryptocurrency.repository.CryptoRepository
-import com.buslaev.monitoringcryptocurrency.utilits.APP_ACTIVITY
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class CryptoViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var cryptoRepository = CryptoRepository(CryptoDatabase(APP_ACTIVITY))
-    val allCrypto: MutableLiveData<Resource<CryptoResponse>> = MutableLiveData()
+    private var cryptoRepository = CryptoRepository(CryptoDatabase(application))
 
+    private val _allCrypto: MutableLiveData<Resource<CryptoResponse>> = MutableLiveData()
+    val allCrypto: LiveData<Resource<CryptoResponse>> get() = _allCrypto
+
+    init {
+        getAllCrypto()
+    }
 
     fun getAllCrypto() = viewModelScope.launch {
-        allCrypto.postValue(Resource.Loading())
+        _allCrypto.postValue(Resource.Loading())
         val response = cryptoRepository.getAllCrypto()
-        allCrypto.postValue(handleAllCryptoResponse(response))
+        _allCrypto.postValue(handleAllCryptoResponse(response))
 
     }
 

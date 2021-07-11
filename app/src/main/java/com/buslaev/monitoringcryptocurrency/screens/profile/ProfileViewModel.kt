@@ -12,7 +12,7 @@ import com.buslaev.monitoringcryptocurrency.utilits.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-class ProflieViewModel(application: Application) : AndroidViewModel(application) {
+class ProfileViewModel(application: Application) : AndroidViewModel(application) {
 
     private var cryptoRepository = CryptoRepository(CryptoDatabase(APP_ACTIVITY))
     val data: MutableLiveData<Resource<ProfileResponce>> = MutableLiveData()

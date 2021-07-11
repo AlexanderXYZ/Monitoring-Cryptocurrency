@@ -2,16 +2,17 @@
     <string name="app_name">Monitoring Cryptocurrency</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="all_menu_title">All</string>
+    <string name="all_menu_title">Cryptos</string>
     <string name="favorite_menu_title">Favorite</string>
     <string name="add_data_success">Data added successfully</string>
     <string name="add_data_yes">Yes</string>
     <string name="add_data_no">No</string>
-    <string name="news_menu_title">news</string>
+    <string name="news_menu_title">News</string>
     <string name="default_news_title">Weekly Recap Ending July 1st</string>
     <string name="default_author">Mira Christanto</string>
     <string name="default_read_more">Read more</string>
     <string name="profile_default_name">Bitcoin</string>
     <string name="profile_default_overview">Default overview</string>
     <string name="profile_dafault_history">Default history</string>
+    <string name="share_menu">Share</string>
 </resources>
