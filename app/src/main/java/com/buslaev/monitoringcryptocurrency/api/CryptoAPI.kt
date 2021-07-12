@@ -1,7 +1,7 @@
 package com.buslaev.monitoringcryptocurrency.api
 
 import com.buslaev.monitoringcryptocurrency.models.allCrypto.CryptoResponse
-import com.buslaev.monitoringcryptocurrency.models.metrics.MetricsResponce
+import com.buslaev.monitoringcryptocurrency.models.metrics.MetricsResponse
 import com.buslaev.monitoringcryptocurrency.models.news.NewsResponse
 import com.buslaev.monitoringcryptocurrency.models.profile.ProfileResponce
 import retrofit2.Response
@@ -25,15 +25,16 @@ interface CryptoAPI {
     @GET("api/v1/news")
     suspend fun getNews(): Response<NewsResponse>
 
-//    @GET("api/v1/news")
-//    suspend fun getNewsCall(): Call<NewsResponse>
 
-
-    @GET("api/v1/assets/{assetKey}/metrics")
+    @GET("api/v1/assets/{assetKey}/metrics/price/time-series")
     suspend fun getMetrics(
-        @Query("assetKey")
-        symbol: String = "btc"
-    ): Response<MetricsResponce>
-
-
+        @Path("assetKey")
+        symbol: String = "btc",
+        @Query("start")
+        start: String = "2021-06-12",
+        @Query("end")
+        end: String = "2021-07-12",
+        @Query("interval")
+        interval: String = "1d"
+    ): Response<MetricsResponse>
 }

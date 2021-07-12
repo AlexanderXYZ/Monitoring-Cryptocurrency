@@ -21,5 +21,10 @@
     <string name="profile_default_name">Bitcoin</string>
     <string name="profile_default_overview">Default overview</string>
     <string name="profile_dafault_history">Default history</string>
+    <string name="metrics_period_1h">1H</string>
+    <string name="metrics_period_1d">1D</string>
+    <string name="metrics_period_1m">1M</string>
+    <string name="metrics_period_1y">1Y</string>
+    <string name="metrics_period_all">ALL</string>
 
 </resources>
