@@ -2,7 +2,6 @@ package com.buslaev.monitoringcryptocurrency.repository
 
 import com.buslaev.monitoringcryptocurrency.api.RetrofitInstance
 import com.buslaev.monitoringcryptocurrency.db.CryptoDatabase
-import com.buslaev.monitoringcryptocurrency.models.allCrypto.Data
 
 class CryptoRepository(
     val database: CryptoDatabase
@@ -16,7 +15,7 @@ class CryptoRepository(
     suspend fun getProfileCrypto(symbol: String) = RetrofitInstance.api.getProfileCrypto(symbol)
     suspend fun getMetricsCrypto(symbol: String) = RetrofitInstance.api.getMetrics(symbol)
 
-    suspend fun insertData(data: Data) {
-        dao.insert(data)
-    }
+//    suspend fun insertData(data: Data) {
+//        dao.insert(data)
+//    }
 }

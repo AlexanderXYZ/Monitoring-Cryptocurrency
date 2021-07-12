@@ -8,17 +8,18 @@
     app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/news_item_current"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="6dp"
-        android:id="@+id/news_item_current">
+        android:background="@color/black"
+        android:padding="6dp">
 
         <TextView
             android:id="@+id/news_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/default_news_title"
-            android:textColor="@color/less_black"
+            android:text="@string/news_default_title"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +30,8 @@
             android:id="@+id/news_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/default_author"
+            android:text="@string/news_default_author"
+            android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/news_title" />
@@ -41,40 +43,23 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
             android:text="2021-07-06 11:45"
+            android:textColor="@color/white"
             android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@id/news_author"
             app:layout_constraintTop_toBottomOf="@id/news_title" />
 
-<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--            android:id="@+id/news_share_fab"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:src="@drawable/ic_share"-->
-<!--            app:fabSize="mini"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
+        <TextView
+            android:id="@+id/news_content"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="16dp"
+            android:text="Week In Review\nThe current Granada proposal for Tezos has"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/news_published_time" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/news_content"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="150dp"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:text="Week In Review\nThe current Granada proposal for Tezos has"-->
-<!--            app:layout_constraintBottom_toTopOf="@id/news_read_more"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/news_published_time" />-->
-
-
-<!--        <TextView-->
-<!--            android:id="@+id/news_read_more"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@string/default_read_more"-->
-<!--            android:textColor="@color/blue"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

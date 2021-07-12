@@ -1,14 +1,13 @@
 package com.buslaev.monitoringcryptocurrency.adapters
 
 
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.buslaev.monitoringcryptocurrency.R
 import com.buslaev.monitoringcryptocurrency.models.news.Data
-import com.buslaev.monitoringcryptocurrency.screens.news.NewsCurrentItem
+import com.buslaev.monitoringcryptocurrency.screens.currentItems.NewsCurrentItem
 import kotlinx.android.synthetic.main.news_item.view.*
 
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
@@ -30,6 +29,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
             news_title.text = newsCurrentItem.title
             news_author.text = newsCurrentItem.author
             news_published_time.text = newsCurrentItem.date
+            news_content.text = newsCurrentItem.content
 
 //            val oldParams:ViewGroup.LayoutParams = news_content.layoutParams
 //            news_read_more.setOnClickListener {

@@ -1,5 +1,6 @@
 package com.buslaev.monitoringcryptocurrency.adapters
 
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.buslaev.monitoringcryptocurrency.R
 import com.buslaev.monitoringcryptocurrency.models.allCrypto.Data
+import com.buslaev.monitoringcryptocurrency.screens.currentItems.CryptoCurrentItem
 import com.buslaev.monitoringcryptocurrency.utilits.APP_ACTIVITY
+import com.buslaev.monitoringcryptocurrency.utilits.SYMBOL_KEY
 import kotlinx.android.synthetic.main.crypto_item.view.*
 
 class CryptoAdapter(
@@ -24,17 +27,6 @@ class CryptoAdapter(
 
         override fun onClick(p0: View?) {
             val position = adapterPosition
-
-            //Expand view
-//            val viewLl = p0?.hidden_view_ll
-//            if (viewLl?.visibility == View.VISIBLE) {
-//                viewLl.visibility = View.GONE
-//                p0.expand_crypto?.setImageResource(R.drawable.ic_expand_more)
-//            } else {
-//                viewLl?.visibility = View.VISIBLE
-//                p0?.expand_crypto?.setImageResource(R.drawable.ic_expand_less)
-//            }
-
             if (position != RecyclerView.NO_POSITION) {
                 listener.onItemClick(position, differ.currentList[position])
             }
@@ -62,42 +54,52 @@ class CryptoAdapter(
         return CryptoViewHolder(view)
     }
 
+    private val mapViewState = hashMapOf<String, Boolean>()
     override fun onBindViewHolder(holder: CryptoViewHolder, position: Int) {
-        val currentCrypto = differ.currentList[position]
+        val currentPosition = differ.currentList[position]
+        val cryptoCurrentItem = CryptoCurrentItem(currentPosition)
+
         holder.itemView.apply {
-            title_crypto.text = currentCrypto.slug
-            symbol_crypto.text = currentCrypto.symbol
-
-            val price = currentCrypto.metrics.market_data.price_usd
-            if (price < 5) {
-                price_crypto.text = String.format("%.5f", price)
-            } else {
-                price_crypto.text = String.format("%.2f", price)
+            title_crypto.text = cryptoCurrentItem.title
+            symbol_crypto.text = cryptoCurrentItem.symbol
+            price_crypto.text = cryptoCurrentItem.price
+            percent_change_crypto.apply {
+                text = cryptoCurrentItem.percentChange
+                setTextColor(cryptoCurrentItem.percentColor)
             }
+            percent.setTextColor(cryptoCurrentItem.percentColor)
 
+            if (mapViewState[currentPosition.id] == true) {
+                hidden_view_ll.visibility = View.VISIBLE
+                expand_crypto.setImageResource(R.drawable.ic_expand_less)
+            }
             //Expand view
             fixed_view.setOnClickListener {
                 val viewLl = hidden_view_ll
                 if (viewLl.visibility == View.VISIBLE) {
                     viewLl.visibility = View.GONE
+                    mapViewState[currentPosition.id] = false
                     expand_crypto.setImageResource(R.drawable.ic_expand_more)
                 } else {
                     viewLl.visibility = View.VISIBLE
+                    mapViewState[currentPosition.id] = true
                     expand_crypto.setImageResource(R.drawable.ic_expand_less)
                 }
-                onItemClickListener?.let { it(currentCrypto) }
+                onItemClickListener?.let { it(currentPosition) }
             }
+            //Navigate to metrics
             crypto_metrics.setOnClickListener {
                 val bundle = Bundle()
-                bundle.putString("symbol", currentCrypto.symbol)
+                bundle.putString(SYMBOL_KEY, cryptoCurrentItem.symbol)
                 APP_ACTIVITY.navController.navigate(
                     R.id.action_allCryptoFragment_to_metricsFragment,
                     bundle
                 )
             }
+            //Navigate to profile
             crypto_profile.setOnClickListener {
                 val bundle = Bundle()
-                bundle.putString("symbol", currentCrypto.symbol)
+                bundle.putString(SYMBOL_KEY, cryptoCurrentItem.symbol)
                 APP_ACTIVITY.navController.navigate(
                     R.id.action_allCryptoFragment_to_profileFragment,
                     bundle

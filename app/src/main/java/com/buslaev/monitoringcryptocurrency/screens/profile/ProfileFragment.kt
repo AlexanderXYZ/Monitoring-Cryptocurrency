@@ -9,14 +9,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.buslaev.monitoringcryptocurrency.adapters.OrganizationAdapter
 import com.buslaev.monitoringcryptocurrency.databinding.FragmentProfileBinding
 import com.buslaev.monitoringcryptocurrency.models.profile.ProfileResponce
-import com.buslaev.monitoringcryptocurrency.utilits.APP_ACTIVITY
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
+import com.buslaev.monitoringcryptocurrency.utilits.SYMBOL_KEY
 
 
 class ProfileFragment : Fragment() {
@@ -41,7 +40,7 @@ class ProfileFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         mViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
-        val symbol: String = arguments?.getString("symbol") ?: "btc"
+        val symbol: String = arguments?.getString(SYMBOL_KEY) ?: "btc"
         mViewModel.getProfile(symbol)
 
         initDataObserver()
@@ -99,13 +98,6 @@ class ProfileFragment : Fragment() {
                         val organizationsList = profile.organizations
                         val adapterOrg = OrganizationAdapter(requireContext(), organizationsList)
                         mBinding.profileOrganizationsListView.adapter = adapterOrg
-
-
-//                        mBinding.profileOrganizationsName.text = profile.organizations
-//                        mBinding.profileOrganizationsJurisdiction.text =
-//                            profile.organizations.elementAt(3).toString()
-                        //people
-                        //mBinding.profilePeopleContributors
                     }
                 }
                 is Resource.Error -> {

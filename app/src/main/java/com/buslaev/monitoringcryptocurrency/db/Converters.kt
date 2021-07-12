@@ -13,6 +13,6 @@ class Converters {
 
     @TypeConverter
     fun toMetrics(value: Double): Metrics {
-        return Metrics(MarketData(value))
+        return Metrics(MarketData(value,value))
     }
 }

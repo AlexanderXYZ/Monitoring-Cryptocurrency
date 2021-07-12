@@ -50,7 +50,7 @@ class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
 
         initRecyclerView()
         //InitTimer
-        updateCrypto()
+        periodicUpdatesStart()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -67,13 +67,13 @@ class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
         return super.onOptionsItemSelected(item)
     }
 
-    fun updateCrypto() {
+    fun periodicUpdatesStart() {
         object : CountDownTimer(timerCount, 1000) {
             override fun onTick(p0: Long) {}
 
             override fun onFinish() {
                 mViewModel.getAllCrypto()
-                updateCrypto()
+                periodicUpdatesStart()
             }
         }.start()
     }

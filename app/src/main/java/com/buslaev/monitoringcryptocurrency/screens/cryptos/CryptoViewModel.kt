@@ -5,6 +5,8 @@ import androidx.lifecycle.*
 import com.buslaev.monitoringcryptocurrency.db.CryptoDatabase
 import com.buslaev.monitoringcryptocurrency.models.allCrypto.CryptoResponse
 import com.buslaev.monitoringcryptocurrency.repository.CryptoRepository
+import com.buslaev.monitoringcryptocurrency.utilits.APP_ACTIVITY
+import com.buslaev.monitoringcryptocurrency.utilits.REPOSITORY
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response

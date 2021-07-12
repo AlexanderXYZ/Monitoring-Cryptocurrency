@@ -11,6 +11,7 @@ import com.buslaev.monitoringcryptocurrency.R
 import com.buslaev.monitoringcryptocurrency.databinding.FragmentMetricsBinding
 import com.buslaev.monitoringcryptocurrency.models.metrics.MetricsResponce
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
+import com.buslaev.monitoringcryptocurrency.utilits.SYMBOL_KEY
 
 
 class MetricsFragment : Fragment() {
@@ -32,7 +33,7 @@ class MetricsFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         mViewModel = ViewModelProvider(this).get(MetricsViewModel::class.java)
-        val symbol = arguments?.getString("symbol") ?: "btc"
+        val symbol = arguments?.getString(SYMBOL_KEY) ?: "btc"
         mViewModel.getMetrics(symbol)
 
         initObserver()
