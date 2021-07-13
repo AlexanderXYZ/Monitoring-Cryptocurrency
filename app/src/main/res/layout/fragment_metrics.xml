@@ -73,10 +73,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintPrice"
-            android:layout_width="0dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="@id/metrics_title"
             app:layout_constraintStart_toStartOf="@id/metrics_title"
             app:layout_constraintTop_toBottomOf="@id/metrics_title">
 
@@ -100,6 +99,7 @@
                 app:layout_constraintTop_toBottomOf="@id/metrics_title_price" />
 
             <TextView
+                android:id="@+id/metrics_current_price"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="end"

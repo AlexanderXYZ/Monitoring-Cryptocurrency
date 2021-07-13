@@ -9,16 +9,14 @@ class CryptoRepository(
     private val dao = database.getCryptoDao()
 
     suspend fun getAllCrypto() = RetrofitInstance.api.getAllCrypto()
+
     suspend fun getNews() = RetrofitInstance.api.getNews()
 
-    //suspend fun getNewsCall() = RetrofitInstance.api.getNewsCall()
     suspend fun getProfileCrypto(symbol: String) = RetrofitInstance.api.getProfileCrypto(symbol)
-    //suspend fun getMetricsCrypto(symbol: String) = RetrofitInstance.api.getMetrics(symbol)
 
-    suspend fun getMetrics(symbol: String, start: String, end: String) =
-        RetrofitInstance.api.getMetrics(symbol, end, start)
+    suspend fun getMetrics(symbol: String, start: String, end: String, interval: String) =
+        RetrofitInstance.api.getMetrics(symbol, end, start, interval)
 
-//    suspend fun insertData(data: Data) {
-//        dao.insert(data)
-//    }
+    suspend fun getMetricsAll(symbol: String, before: String, interval: String) =
+        RetrofitInstance.api.getMetricsAll(symbol, before, interval)
 }
