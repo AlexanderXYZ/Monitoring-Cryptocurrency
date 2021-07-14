@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.buslaev.monitoringcryptocurrency.R
 import com.buslaev.monitoringcryptocurrency.databinding.FragmentMetricsBinding
 import com.buslaev.monitoringcryptocurrency.models.metrics.Data
 import com.buslaev.monitoringcryptocurrency.models.metrics.MetricsResponse
@@ -23,6 +25,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class MetricsFragment : Fragment() {
@@ -37,6 +40,9 @@ class MetricsFragment : Fragment() {
     private val listValues: List<List<Double>> get() = currentCrypto.values
     private val CLOSE = 4
 
+    private lateinit var selectedItemPeriod: TextView
+    private var currentChart: Range = MONTH
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,43 +51,90 @@ class MetricsFragment : Fragment() {
         return mBinding.root
     }
 
-    override fun onStart() {
-        super.onStart()
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//
+//
+//        if (savedInstanceState != null) {
+//
+//        } else {
+//            currentChart = MONTH
+//        }
+//    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val symbol = arguments?.getString(SYMBOL_KEY) ?: "btc"
+
         mViewModel = ViewModelProvider(this, MetricsViewModelFactory(symbol)).get(
             MetricsViewModel::class.java
         )
-        mViewModel.getMetrics(MONTH)
+        if (savedInstanceState != null) {
+            val savedData = arguments?.getSerializable("savedData") as MetricsCurrent
+            currentChart = savedData.currentChart
+            selectedItemPeriod = when (currentChart) {
+                HOUR -> mBinding.metricsPeriod1h
+                DAY -> mBinding.metricsPeriod1d
+                MONTH -> mBinding.metricsPeriod1m
+                YEAR -> mBinding.metricsPeriod1y
+                ALL -> mBinding.metricsPeriodAll
+            }
+        } else {
+            currentChart = MONTH
+            selectedItemPeriod = mBinding.metricsPeriod1m
+        }
+        mViewModel.getMetrics(currentChart)
 
         initObserver()
         initPeriodButtons()
     }
 
+//    override fun onStart() {
+//        super.onStart()
+//    }
+
+    override fun onPause() {
+        super.onPause()
+        val savedData = MetricsCurrent(currentChart)
+        arguments?.putSerializable("savedData", savedData)
+    }
+
     private fun initPeriodButtons() {
         mBinding.metricsPeriod1h.setOnClickListener {
+            currentChart = HOUR
             mViewModel.getMetrics(HOUR)
-            initChart(HOUR)
+            setBackgroundSelectedPeriodItem(mBinding.metricsPeriod1h)
         }
         mBinding.metricsPeriod1d.setOnClickListener {
+            currentChart = DAY
             mViewModel.getMetrics(DAY)
-            initChart(DAY)
+            setBackgroundSelectedPeriodItem(mBinding.metricsPeriod1d)
         }
         mBinding.metricsPeriod1m.setOnClickListener {
+            currentChart = MONTH
             mViewModel.getMetrics(MONTH)
-            initChart(MONTH)
+            setBackgroundSelectedPeriodItem(mBinding.metricsPeriod1m)
         }
         mBinding.metricsPeriod1y.setOnClickListener {
+            currentChart = YEAR
             mViewModel.getMetrics(YEAR)
-            initChart(YEAR)
+            setBackgroundSelectedPeriodItem(mBinding.metricsPeriod1y)
         }
         mBinding.metricsPeriodAll.setOnClickListener {
+            currentChart = ALL
             mViewModel.getMetrics(ALL)
-            initChart(ALL)
+            setBackgroundSelectedPeriodItem(mBinding.metricsPeriodAll)
         }
     }
 
+    private fun setBackgroundSelectedPeriodItem(textView: TextView) {
+        selectedItemPeriod.setBackgroundResource(0)
+        selectedItemPeriod = textView
+        selectedItemPeriod.setBackgroundResource(R.drawable.background_metrics_period_selected)
+    }
 
-    private fun initChart(range: Range) {
+
+    private fun initChart() {
         val entries = ArrayList<Entry>()
         var x = 0F
         for (item in listValues) {
@@ -92,8 +145,9 @@ class MetricsFragment : Fragment() {
         val lineDataSet = LineDataSet(entries, "Label")
         lineDataSet.apply {
             color = Color.GREEN
-            valueTextColor = Color.WHITE
             lineWidth = 1.5F
+            setDrawCircles(false)
+            setDrawValues(false)
         }
 
         val lineData = LineData(lineDataSet)
@@ -106,8 +160,9 @@ class MetricsFragment : Fragment() {
             xAxis.apply {
                 position = XAxis.XAxisPosition.BOTTOM
                 textColor = Color.WHITE
-                valueFormatter = MyXAxisFormatter(listValues, range)
+                valueFormatter = MyXAxisFormatter(listValues)
             }
+            animateX(1000)
             legend.isEnabled = false
             description.isEnabled = false
             isScaleYEnabled = false
@@ -116,16 +171,15 @@ class MetricsFragment : Fragment() {
     }
 
 
-    class MyXAxisFormatter(
-        private val listValues: List<List<Double>>,
-        private val range: Range
+    inner class MyXAxisFormatter(
+        private val listValues: List<List<Double>>
     ) : ValueFormatter() {
         private val days = ArrayList<String>()
         override fun getAxisLabel(value: Float, axis: AxisBase?): String {
             for (item in listValues) {
                 val cal = Calendar.getInstance(Locale.getDefault())
                 cal.timeInMillis = item[0].toLong()
-                val date = when (range) {
+                val date = when (currentChart) {
                     HOUR -> DateFormat.format("HH:mm", cal).toString()
                     DAY -> DateFormat.format("HH:mm", cal).toString()
                     MONTH -> DateFormat.format("dd-MM", cal).toString()
@@ -144,7 +198,7 @@ class MetricsFragment : Fragment() {
                 is Resource.Success -> {
                     response.data?.let { metricsResponse ->
                         currentCrypto = metricsResponse.data
-                        initChart(MONTH)
+                        initChart()
                         mBinding.metricsTitle.text =
                             currentCrypto.name + "(${currentCrypto.symbol})"
 

@@ -16,9 +16,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:layout_margin="6dp"
         android:id="@+id/metrics_periods"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +38,8 @@
         <TextView
             android:id="@+id/metrics_period_1m"
             style="@style/item_metrics_period"
-            android:text="@string/metrics_period_1m" />
+            android:text="@string/metrics_period_1m"
+            android:background="@drawable/background_metrics_period_selected"/>
 
         <TextView
             android:id="@+id/metrics_period_1y"

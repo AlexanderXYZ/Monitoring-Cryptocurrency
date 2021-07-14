@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.buslaev.monitoringcryptocurrency.R
 import com.buslaev.monitoringcryptocurrency.adapters.CryptoAdapter
+import com.buslaev.monitoringcryptocurrency.databinding.FragmentAllCryptoBinding
 import com.buslaev.monitoringcryptocurrency.models.allCrypto.CryptoResponse
 import com.buslaev.monitoringcryptocurrency.models.allCrypto.Data
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
@@ -18,6 +19,9 @@ import kotlinx.android.synthetic.main.fragment_all_crypto.*
 
 class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
 
+    private var _binding: FragmentAllCryptoBinding? = null
+    private val mBinding get() = _binding!!
+
     private lateinit var mViewModel: CryptoViewModel
     private lateinit var mAdapter: CryptoAdapter
 
@@ -25,13 +29,16 @@ class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
 
     private val TAG = "allCrypto"
     private val timerCount = 10000L
+    private val timerInterval = 1000L
+
+    private lateinit var mTimer: TimerUpdateCrypto
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_all_crypto, container, false)
+        _binding = FragmentAllCryptoBinding.inflate(layoutInflater, container, false)
+        return mBinding.root
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +57,7 @@ class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
 
         initRecyclerView()
         //InitTimer
-        periodicUpdatesStart()
+        startUpdates()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -67,19 +74,27 @@ class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
         return super.onOptionsItemSelected(item)
     }
 
-    fun periodicUpdatesStart() {
-        object : CountDownTimer(timerCount, 1000) {
-            override fun onTick(p0: Long) {}
 
-            override fun onFinish() {
-                mViewModel.getAllCrypto()
-                periodicUpdatesStart()
-            }
-        }.start()
+    inner class TimerUpdateCrypto : CountDownTimer(timerCount, timerInterval) {
+        override fun onTick(p0: Long) {}
+
+        override fun onFinish() {
+            mViewModel.getAllCrypto()
+            startUpdates()
+        }
+    }
+
+    fun startUpdates() {
+        mTimer = TimerUpdateCrypto()
+        mTimer.start()
+    }
+
+    private fun cancelUpdates() {
+        mTimer.cancel()
     }
 
     private fun initRecyclerView() {
-        cryptos_recyclerView.apply {
+        mBinding.cryptosRecyclerView.apply {
             adapter = mAdapter
             layoutManager = LinearLayoutManager(activity)
             itemAnimator?.changeDuration = 0
@@ -90,7 +105,7 @@ class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
                 is Resource.Success -> {
                     response.data?.let { cryptoResponse ->
                         mAdapter.differ.submitList(cryptoResponse.data)
-                        loading_progressBar.visibility = View.GONE
+                        mBinding.loadingProgressBar.visibility = View.GONE
                     }
                 }
                 is Resource.Error -> {
@@ -106,6 +121,12 @@ class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
         mViewModel.allCrypto.observe(viewLifecycleOwner, mObserver)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        cancelUpdates()
+    }
+
     override fun onItemClick(position: Int, selectedData: Data) {
 //        val builder = AlertDialog.Builder(APP_ACTIVITY)
 //            .setTitle("Add ${selectedData.symbol} to favorite list?")
@@ -119,6 +140,5 @@ class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
 //                }
 //            }.setNegativeButton(getString(R.string.add_data_no)) { dialog, which -> }
 //        builder.show()
-
     }
 }
