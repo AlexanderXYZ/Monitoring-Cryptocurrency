@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.buslaev.monitoringcryptocurrency.R
@@ -15,6 +16,8 @@ import com.buslaev.monitoringcryptocurrency.databinding.FragmentMetricsBinding
 import com.buslaev.monitoringcryptocurrency.models.metrics.Data
 import com.buslaev.monitoringcryptocurrency.models.metrics.MetricsResponse
 import com.buslaev.monitoringcryptocurrency.screens.metrics.MetricsFragment.Range.*
+import com.buslaev.monitoringcryptocurrency.utilits.APPLICATION_ACTIVITY
+import com.buslaev.monitoringcryptocurrency.utilits.APP_ACTIVITY
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
 import com.buslaev.monitoringcryptocurrency.utilits.SYMBOL_KEY
 import com.github.mikephil.charting.components.AxisBase
@@ -66,9 +69,10 @@ class MetricsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val symbol = arguments?.getString(SYMBOL_KEY) ?: "btc"
 
-        mViewModel = ViewModelProvider(this, MetricsViewModelFactory(symbol)).get(
-            MetricsViewModel::class.java
-        )
+        mViewModel =
+            ViewModelProvider(this, MetricsViewModelFactory(APPLICATION_ACTIVITY, symbol)).get(
+                MetricsViewModel::class.java
+            )
         if (savedInstanceState != null) {
             val savedData = arguments?.getSerializable("savedData") as MetricsCurrent
             currentChart = savedData.currentChart
@@ -208,7 +212,9 @@ class MetricsFragment : Fragment() {
 
                 }
                 is Resource.Error -> {
-
+                    response.message?.let { message ->
+                        Toast.makeText(activity, "Error: $message", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }

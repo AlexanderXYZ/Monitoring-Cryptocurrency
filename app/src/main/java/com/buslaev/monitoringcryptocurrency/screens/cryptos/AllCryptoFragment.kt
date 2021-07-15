@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -110,7 +111,7 @@ class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
                 }
                 is Resource.Error -> {
                     response.message?.let { message ->
-                        Log.e(TAG, "Error: $message")
+                        Toast.makeText(activity, "Error: $message", Toast.LENGTH_LONG).show()
                     }
                 }
                 is Resource.Loading -> {

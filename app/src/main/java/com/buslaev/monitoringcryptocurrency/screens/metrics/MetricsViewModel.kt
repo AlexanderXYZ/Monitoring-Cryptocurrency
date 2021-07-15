@@ -1,10 +1,13 @@
 package com.buslaev.monitoringcryptocurrency.screens.metrics
 
 
+import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.buslaev.monitoringcryptocurrency.CryptoApplication
 import com.buslaev.monitoringcryptocurrency.db.CryptoDatabase
 import com.buslaev.monitoringcryptocurrency.models.metrics.MetricsResponse
 import com.buslaev.monitoringcryptocurrency.repository.CryptoRepository
@@ -13,13 +16,17 @@ import com.buslaev.monitoringcryptocurrency.utilits.APP_ACTIVITY
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.io.IOException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class MetricsViewModel(val symbol: String) : ViewModel() {
+class MetricsViewModel(application: Application, val symbol: String) :
+    AndroidViewModel(application) {
 
     private var cryptoRepository = CryptoRepository(CryptoDatabase(APP_ACTIVITY))
-    var metrics: MutableLiveData<Resource<MetricsResponse>> = MutableLiveData()
+
+    private val _metrics: MutableLiveData<Resource<MetricsResponse>> = MutableLiveData()
+    val metrics: LiveData<Resource<MetricsResponse>> get() = _metrics
 
     private val defaultInterval = "1d"
 
@@ -30,9 +37,24 @@ class MetricsViewModel(val symbol: String) : ViewModel() {
     }
 
     fun getMetrics(range: MetricsFragment.Range) = viewModelScope.launch {
-        metrics.postValue(Resource.Loading())
-        val response = getResponseWithParameters(range)
-        metrics.postValue(handleMetricsResponse(response))
+        getSafeMetrics(range)
+    }
+
+    private suspend fun getSafeMetrics(range: MetricsFragment.Range) {
+        _metrics.postValue(Resource.Loading())
+        try {
+            if (hasInternetConnection()) {
+                val response = getResponseWithParameters(range)
+                _metrics.postValue(handleMetricsResponse(response))
+            } else {
+                _metrics.postValue(Resource.Error("No internet connection"))
+            }
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> _metrics.postValue(Resource.Error("Network Failure"))
+                else -> _metrics.postValue(Resource.Error("Conversion Error"))
+            }
+        }
     }
 
     private suspend fun getResponseWithParameters(range: MetricsFragment.Range): Response<MetricsResponse> {
@@ -66,5 +88,32 @@ class MetricsViewModel(val symbol: String) : ViewModel() {
             }
         }
         return Resource.Error(response.message())
+    }
+
+    private fun hasInternetConnection(): Boolean {
+        val connectivityManager = getApplication<CryptoApplication>().getSystemService(
+            Context.CONNECTIVITY_SERVICE
+        ) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val activeNetwork = connectivityManager.activeNetwork ?: return false
+            val capabilities =
+                connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+            return when {
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                else -> false
+            }
+        } else {
+            connectivityManager.activeNetworkInfo?.run {
+                return when (type) {
+                    ConnectivityManager.TYPE_WIFI -> true
+                    ConnectivityManager.TYPE_MOBILE -> true
+                    ConnectivityManager.TYPE_ETHERNET -> true
+                    else -> false
+                }
+            }
+        }
+        return false
     }
 }
