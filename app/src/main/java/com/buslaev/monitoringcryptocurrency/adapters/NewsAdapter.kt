@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.buslaev.monitoringcryptocurrency.R
 import com.buslaev.monitoringcryptocurrency.models.news.Data
-import com.buslaev.monitoringcryptocurrency.screens.currentItems.NewsCurrentItem
+import com.buslaev.monitoringcryptocurrency.adapters.helpedModels.NewsCurrentItem
 import kotlinx.android.synthetic.main.news_item.view.*
 
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {

@@ -1,4 +1,4 @@
-package com.buslaev.monitoringcryptocurrency.screens.currentItems
+package com.buslaev.monitoringcryptocurrency.adapters.helpedModels
 
 import android.graphics.Color
 import com.buslaev.monitoringcryptocurrency.models.allCrypto.Data
@@ -21,14 +21,14 @@ class CryptoCurrentItem(
 
     private fun setTransformedPrice(price: Double) {
         this.price = if (price < 5) {
-            String.format("%.5f", price)
+            "$"+String.format("%.5f", price)
         } else {
-            String.format("%.2f", price)
+            "$"+String.format("%.2f", price)
         }
     }
 
     private fun setTransformedPercentChange(percentChange: Double) {
-        this.percentChange = String.format("%.2f", percentChange)
+        this.percentChange = String.format("%.2f", percentChange) + "%"
         this.percentColor = if (percentChange < 0) {
             Color.RED
         } else {

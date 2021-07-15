@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.buslaev.monitoringcryptocurrency.R
 import com.buslaev.monitoringcryptocurrency.adapters.NewsAdapter
+import com.buslaev.monitoringcryptocurrency.databinding.FragmentNewsBinding
 import com.buslaev.monitoringcryptocurrency.models.news.NewsResponse
 import com.buslaev.monitoringcryptocurrency.screens.cryptos.CryptoViewModel
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
@@ -21,6 +22,9 @@ import kotlinx.android.synthetic.main.fragment_news.*
 
 class NewsFragment : Fragment() {
 
+    private var _binding: FragmentNewsBinding? = null
+    private val mBinding get() = _binding!!
+
     private lateinit var mViewModel: NewsViewModel
 
     private lateinit var mAdapter: NewsAdapter
@@ -28,21 +32,23 @@ class NewsFragment : Fragment() {
 
     private lateinit var mObserver: Observer<Resource<NewsResponse>>
 
-    private val TAG = "newsError"
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_news, container, false)
+        _binding = FragmentNewsBinding.inflate(layoutInflater, container, false)
+        return mBinding.root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mViewModel = ViewModelProvider(this).get(NewsViewModel::class.java)
     }
 
     override fun onStart() {
         super.onStart()
         setHasOptionsMenu(true)
-        mViewModel = ViewModelProvider(this).get(NewsViewModel::class.java)
 
         initRecyclerView()
 
@@ -95,5 +101,10 @@ class NewsFragment : Fragment() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

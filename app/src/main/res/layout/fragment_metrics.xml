@@ -7,6 +7,18 @@
     android:background="@color/less_black"
     tools:context=".screens.metrics.MetricsFragment">
 
+    <TextView
+        android:id="@+id/current_price_chart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="6dp"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
         android:layout_width="match_parent"
@@ -15,11 +27,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ProgressBar
+        android:id="@+id/loading_chart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateDrawable="@drawable/custom_progressbar"
+        android:indeterminateOnly="true"
+        app:layout_constraintBottom_toBottomOf="@id/chart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
-        android:layout_margin="6dp"
         android:id="@+id/metrics_periods"
         android:layout_width="match_parent"
         android:layout_height="30dp"
+        android:layout_margin="6dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,8 +61,8 @@
         <TextView
             android:id="@+id/metrics_period_1m"
             style="@style/item_metrics_period"
-            android:text="@string/metrics_period_1m"
-            android:background="@drawable/background_metrics_period_selected"/>
+            android:background="@drawable/background_metrics_period_selected"
+            android:text="@string/metrics_period_1m" />
 
         <TextView
             android:id="@+id/metrics_period_1y"
@@ -141,6 +164,7 @@
                 app:layout_constraintTop_toBottomOf="@id/metrics_title_change" />
 
             <TextView
+                android:id="@+id/metrics_current_price_change"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="end"

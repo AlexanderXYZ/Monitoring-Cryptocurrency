@@ -1,4 +1,4 @@
-package com.buslaev.monitoringcryptocurrency.screens.currentItems
+package com.buslaev.monitoringcryptocurrency.adapters.helpedModels
 
 import android.os.Build
 import android.text.Html

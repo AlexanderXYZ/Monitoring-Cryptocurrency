@@ -10,28 +10,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.buslaev.monitoringcryptocurrency.R
 import com.buslaev.monitoringcryptocurrency.models.allCrypto.Data
-import com.buslaev.monitoringcryptocurrency.screens.currentItems.CryptoCurrentItem
+import com.buslaev.monitoringcryptocurrency.adapters.helpedModels.CryptoCurrentItem
+import com.buslaev.monitoringcryptocurrency.adapters.helpedModels.CryptoIndicators
 import com.buslaev.monitoringcryptocurrency.utilits.APP_ACTIVITY
 import com.buslaev.monitoringcryptocurrency.utilits.SYMBOL_KEY
 import kotlinx.android.synthetic.main.crypto_item.view.*
 
-class CryptoAdapter(
-    val listener: OnItemClickListener
-) : RecyclerView.Adapter<CryptoAdapter.CryptoViewHolder>() {
+class CryptoAdapter : RecyclerView.Adapter<CryptoAdapter.CryptoViewHolder>() {
 
-    inner class CryptoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
-        View.OnClickListener {
-        init {
-            itemView.setOnClickListener(this)
-        }
+    private val mapViewState = hashMapOf<String, Boolean>()
 
-        override fun onClick(p0: View?) {
-            val position = adapterPosition
-            if (position != RecyclerView.NO_POSITION) {
-                listener.onItemClick(position, differ.currentList[position])
-            }
-        }
-    }
+    inner class CryptoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     private val differCallback = object : DiffUtil.ItemCallback<Data>() {
         override fun areItemsTheSame(oldItem: Data, newItem: Data): Boolean {
@@ -45,16 +34,11 @@ class CryptoAdapter(
 
     val differ = AsyncListDiffer(this, differCallback)
 
-    interface OnItemClickListener {
-        fun onItemClick(position: Int, selectedData: Data)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CryptoViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.crypto_item, parent, false)
         return CryptoViewHolder(view)
     }
 
-    private val mapViewState = hashMapOf<String, Boolean>()
     override fun onBindViewHolder(holder: CryptoViewHolder, position: Int) {
         val currentPosition = differ.currentList[position]
         val cryptoCurrentItem = CryptoCurrentItem(currentPosition)
@@ -67,7 +51,6 @@ class CryptoAdapter(
                 text = cryptoCurrentItem.percentChange
                 setTextColor(cryptoCurrentItem.percentColor)
             }
-            percent.setTextColor(cryptoCurrentItem.percentColor)
 
             if (mapViewState[currentPosition.id] == true) {
                 hidden_view_ll.visibility = View.VISIBLE
@@ -89,8 +72,14 @@ class CryptoAdapter(
             }
             //Navigate to metrics
             crypto_metrics.setOnClickListener {
+                val cryptoIndicators = CryptoIndicators(
+                    cryptoCurrentItem.symbol,
+                    cryptoCurrentItem.price,
+                    cryptoCurrentItem.percentChange,
+                    cryptoCurrentItem.percentColor
+                )
                 val bundle = Bundle()
-                bundle.putString(SYMBOL_KEY, cryptoCurrentItem.symbol)
+                bundle.putSerializable("crypto", cryptoIndicators)
                 APP_ACTIVITY.navController.navigate(
                     R.id.action_allCryptoFragment_to_metricsFragment,
                     bundle
@@ -99,7 +88,9 @@ class CryptoAdapter(
             //Navigate to profile
             crypto_profile.setOnClickListener {
                 val bundle = Bundle()
-                bundle.putString(SYMBOL_KEY, cryptoCurrentItem.symbol)
+                bundle.apply {
+                    putString(SYMBOL_KEY, cryptoCurrentItem.symbol)
+                }
                 APP_ACTIVITY.navController.navigate(
                     R.id.action_allCryptoFragment_to_profileFragment,
                     bundle

@@ -18,7 +18,7 @@ import com.buslaev.monitoringcryptocurrency.utilits.Resource
 import kotlinx.android.synthetic.main.fragment_all_crypto.*
 
 
-class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
+class AllCryptoFragment : Fragment() {
 
     private var _binding: FragmentAllCryptoBinding? = null
     private val mBinding get() = _binding!!
@@ -27,12 +27,6 @@ class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
     private lateinit var mAdapter: CryptoAdapter
 
     private lateinit var mObserver: Observer<Resource<CryptoResponse>>
-
-    private val TAG = "allCrypto"
-    private val timerCount = 10000L
-    private val timerInterval = 1000L
-
-    private lateinit var mTimer: TimerUpdateCrypto
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +43,7 @@ class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
 
     private fun initializations() {
         mViewModel = ViewModelProvider(this).get(CryptoViewModel::class.java)
-        mAdapter = CryptoAdapter(this)
+        mAdapter = CryptoAdapter()
     }
 
     override fun onStart() {
@@ -57,8 +51,8 @@ class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
         setHasOptionsMenu(true)
 
         initRecyclerView()
-        //InitTimer
-        startUpdates()
+
+        mViewModel.startUpdatesData()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -73,25 +67,6 @@ class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-
-    inner class TimerUpdateCrypto : CountDownTimer(timerCount, timerInterval) {
-        override fun onTick(p0: Long) {}
-
-        override fun onFinish() {
-            mViewModel.getAllCrypto()
-            startUpdates()
-        }
-    }
-
-    fun startUpdates() {
-        mTimer = TimerUpdateCrypto()
-        mTimer.start()
-    }
-
-    private fun cancelUpdates() {
-        mTimer.cancel()
     }
 
     private fun initRecyclerView() {
@@ -115,7 +90,6 @@ class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
                     }
                 }
                 is Resource.Loading -> {
-//                    loading_progressBar.visibility = View.VISIBLE
                 }
             }
         }
@@ -125,21 +99,6 @@ class AllCryptoFragment : Fragment(), CryptoAdapter.OnItemClickListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        cancelUpdates()
-    }
-
-    override fun onItemClick(position: Int, selectedData: Data) {
-//        val builder = AlertDialog.Builder(APP_ACTIVITY)
-//            .setTitle("Add ${selectedData.symbol} to favorite list?")
-//            .setPositiveButton(getString(R.string.add_data_yes)) { dialog, which ->
-//                mViewModel.addData(selectedData) {
-//                    Toast.makeText(
-//                        APP_ACTIVITY,
-//                        getString(R.string.add_data_success),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//            }.setNegativeButton(getString(R.string.add_data_no)) { dialog, which -> }
-//        builder.show()
+        mViewModel.stopUpdatesData()
     }
 }

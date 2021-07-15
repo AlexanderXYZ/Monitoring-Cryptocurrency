@@ -18,7 +18,6 @@ class WebNewsFragment : Fragment() {
     private var _binding: FragmentWebNewsBinding? = null
     private val mBinding get() = _binding!!
 
-    //val args: WebNewsFragmentArgs by navArgs()
     private lateinit var news: Data
     private lateinit var webView: WebView
 
@@ -40,7 +39,6 @@ class WebNewsFragment : Fragment() {
         news = arguments?.getSerializable("url") as Data
 
         webView = mBinding.newsWebView
-        //val data = args.newsData
         webView.apply {
             webViewClient = WebViewClient()
             settings.javaScriptEnabled = true

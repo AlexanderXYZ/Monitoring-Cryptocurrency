@@ -6,6 +6,7 @@ import android.net.ConnectivityManager
 import android.net.ConnectivityManager.*
 import android.net.NetworkCapabilities.*
 import android.os.Build
+import android.os.CountDownTimer
 import androidx.lifecycle.*
 import com.buslaev.monitoringcryptocurrency.CryptoApplication
 import com.buslaev.monitoringcryptocurrency.db.CryptoDatabase
@@ -22,6 +23,8 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
 
     private val _allCrypto: MutableLiveData<Resource<CryptoResponse>> = MutableLiveData()
     val allCrypto: LiveData<Resource<CryptoResponse>> get() = _allCrypto
+
+    private val timer: UpdatesTimerData = UpdatesTimerData()
 
     init {
         getAllCrypto()
@@ -83,5 +86,22 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
             }
         }
         return false
+    }
+
+    fun startUpdatesData() {
+        timer.start()
+    }
+
+    fun stopUpdatesData() {
+        timer.cancel()
+    }
+
+    inner class UpdatesTimerData : CountDownTimer(10000L, 1000L) {
+        override fun onTick(p0: Long) {}
+
+        override fun onFinish() {
+            getAllCrypto()
+            startUpdatesData()
+        }
     }
 }

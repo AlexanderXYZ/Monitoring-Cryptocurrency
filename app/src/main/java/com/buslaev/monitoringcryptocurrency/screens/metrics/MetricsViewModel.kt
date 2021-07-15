@@ -116,4 +116,6 @@ class MetricsViewModel(application: Application, val symbol: String) :
         }
         return false
     }
+
+
 }
