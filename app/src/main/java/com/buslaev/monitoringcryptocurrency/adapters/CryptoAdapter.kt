@@ -2,12 +2,16 @@ package com.buslaev.monitoringcryptocurrency.adapters
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionManager
 import com.buslaev.monitoringcryptocurrency.R
 import com.buslaev.monitoringcryptocurrency.models.allCrypto.Data
 import com.buslaev.monitoringcryptocurrency.adapters.helpedModels.CryptoCurrentItem
@@ -15,8 +19,11 @@ import com.buslaev.monitoringcryptocurrency.adapters.helpedModels.CryptoIndicato
 import com.buslaev.monitoringcryptocurrency.utilits.APP_ACTIVITY
 import com.buslaev.monitoringcryptocurrency.utilits.SYMBOL_KEY
 import kotlinx.android.synthetic.main.crypto_item.view.*
+import kotlinx.android.synthetic.main.fragment_all_crypto.view.*
 
-class CryptoAdapter : RecyclerView.Adapter<CryptoAdapter.CryptoViewHolder>() {
+class CryptoAdapter(
+    private val rv: RecyclerView
+) : RecyclerView.Adapter<CryptoAdapter.CryptoViewHolder>() {
 
     private val mapViewState = hashMapOf<String, Boolean>()
 
@@ -42,8 +49,25 @@ class CryptoAdapter : RecyclerView.Adapter<CryptoAdapter.CryptoViewHolder>() {
     override fun onBindViewHolder(holder: CryptoViewHolder, position: Int) {
         val currentPosition = differ.currentList[position]
         val cryptoCurrentItem = CryptoCurrentItem(currentPosition)
+        val item = holder.itemView
 
-        holder.itemView.apply {
+        fun showUnderView() {
+            item.hidden_view_ll.visibility = View.VISIBLE
+            item.expand_crypto.setImageResource(R.drawable.ic_expand_less)
+        }
+
+        fun hideUnderView() {
+            item.hidden_view_ll.visibility = View.GONE
+            item.expand_crypto.setImageResource(R.drawable.ic_expand_more)
+        }
+
+        fun transition(isActivated: Boolean) {
+            mapViewState[currentPosition.id] = isActivated
+            item.fixed_view.isActivated = isActivated
+            TransitionManager.beginDelayedTransition(rv)
+        }
+
+        item.apply {
             title_crypto.text = cryptoCurrentItem.title
             symbol_crypto.text = cryptoCurrentItem.symbol
             price_crypto.text = cryptoCurrentItem.price
@@ -53,31 +77,24 @@ class CryptoAdapter : RecyclerView.Adapter<CryptoAdapter.CryptoViewHolder>() {
             }
 
             if (mapViewState[currentPosition.id] == true) {
-                hidden_view_ll.visibility = View.VISIBLE
-                expand_crypto.setImageResource(R.drawable.ic_expand_less)
+                showUnderView()
+            } else {
+                hideUnderView()
             }
+
             //Expand view
             fixed_view.setOnClickListener {
-                val viewLl = hidden_view_ll
-                if (viewLl.visibility == View.VISIBLE) {
-                    viewLl.visibility = View.GONE
-                    mapViewState[currentPosition.id] = false
-                    expand_crypto.setImageResource(R.drawable.ic_expand_more)
+                if (hidden_view_ll.visibility == View.GONE) {
+                    showUnderView()
+                    transition(true)
                 } else {
-                    viewLl.visibility = View.VISIBLE
-                    mapViewState[currentPosition.id] = true
-                    expand_crypto.setImageResource(R.drawable.ic_expand_less)
+                    hideUnderView()
+                    transition(false)
                 }
-                onItemClickListener?.let { it(currentPosition) }
             }
             //Navigate to metrics
             crypto_metrics.setOnClickListener {
-                val cryptoIndicators = CryptoIndicators(
-                    cryptoCurrentItem.symbol,
-                    cryptoCurrentItem.price,
-                    cryptoCurrentItem.percentChange,
-                    cryptoCurrentItem.percentColor
-                )
+                val cryptoIndicators = cryptoCurrentItem.getCryptoIndicators()
                 val bundle = Bundle()
                 bundle.putSerializable("crypto", cryptoIndicators)
                 APP_ACTIVITY.navController.navigate(

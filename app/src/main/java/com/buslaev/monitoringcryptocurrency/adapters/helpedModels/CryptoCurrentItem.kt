@@ -13,7 +13,7 @@ class CryptoCurrentItem(
     var percentColor: Int = 0
 
     init {
-        this.title = currentItem.slug
+        this.title = currentItem.slug.replaceFirstChar { it.uppercase() }
         this.symbol = currentItem.symbol
         setTransformedPrice(currentItem.metrics.market_data.price_usd)
         setTransformedPercentChange(currentItem.metrics.market_data.percent_change_usd_last_24_hours)
@@ -21,9 +21,9 @@ class CryptoCurrentItem(
 
     private fun setTransformedPrice(price: Double) {
         this.price = if (price < 5) {
-            "$"+String.format("%.5f", price)
+            "$" + String.format("%.5f", price)
         } else {
-            "$"+String.format("%.2f", price)
+            "$" + String.format("%.2f", price)
         }
     }
 
@@ -34,5 +34,9 @@ class CryptoCurrentItem(
         } else {
             Color.GREEN
         }
+    }
+
+    fun getCryptoIndicators(): CryptoIndicators {
+        return CryptoIndicators(title,symbol, price, percentChange, percentColor)
     }
 }

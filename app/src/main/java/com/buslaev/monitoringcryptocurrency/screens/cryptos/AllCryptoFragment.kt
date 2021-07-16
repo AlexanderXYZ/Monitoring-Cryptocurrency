@@ -43,9 +43,12 @@ class AllCryptoFragment : Fragment() {
 
     private fun initializations() {
         mViewModel = ViewModelProvider(this).get(CryptoViewModel::class.java)
-        mAdapter = CryptoAdapter()
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mAdapter = CryptoAdapter(mBinding.cryptosRecyclerView)
+    }
     override fun onStart() {
         super.onStart()
         setHasOptionsMenu(true)

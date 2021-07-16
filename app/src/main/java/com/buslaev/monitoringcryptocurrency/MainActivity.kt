@@ -2,6 +2,7 @@ package com.buslaev.monitoringcryptocurrency
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -21,9 +22,31 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         APP_ACTIVITY = this
         APPLICATION_ACTIVITY = application
-        navController = findNavController(R.id.nav_host_fragment)
+        setupNav()
 
-        bottom_nav_view.setupWithNavController(findNavController(R.id.nav_host_fragment))
+    }
+
+    private fun setupNav() {
+        navController = findNavController(R.id.nav_host_fragment)
+        bottom_nav_view.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            when (destination.id) {
+                R.id.allCryptoFragment -> showBottomNav()
+                R.id.newsFragment -> showBottomNav()
+                R.id.metricsFragment -> hideBottomNav()
+                R.id.profileFragment -> hideBottomNav()
+                R.id.webNewsFragment -> hideBottomNav()
+            }
+        }
+    }
+
+    private fun showBottomNav() {
+        bottom_nav_view.visibility = View.VISIBLE
+    }
+
+    private fun hideBottomNav() {
+        bottom_nav_view.visibility = View.GONE
     }
 
 }

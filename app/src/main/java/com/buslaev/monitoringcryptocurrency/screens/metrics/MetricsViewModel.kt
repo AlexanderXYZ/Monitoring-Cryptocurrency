@@ -12,8 +12,10 @@ import com.buslaev.monitoringcryptocurrency.db.CryptoDatabase
 import com.buslaev.monitoringcryptocurrency.models.metrics.MetricsResponse
 import com.buslaev.monitoringcryptocurrency.repository.CryptoRepository
 import com.buslaev.monitoringcryptocurrency.screens.metrics.MetricsFragment.Range.*
+import com.buslaev.monitoringcryptocurrency.screens.metrics.chart.MetricsChart
 import com.buslaev.monitoringcryptocurrency.utilits.APP_ACTIVITY
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
+import com.github.mikephil.charting.charts.LineChart
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
@@ -117,5 +119,9 @@ class MetricsViewModel(application: Application, val symbol: String) :
         return false
     }
 
+    fun buildChart(range: MetricsFragment.Range, listValues: List<List<Double>>): LineChart {
+        val metricsChart = MetricsChart(getApplication(), listValues, range)
+        return metricsChart.getLineChart()
+    }
 
 }

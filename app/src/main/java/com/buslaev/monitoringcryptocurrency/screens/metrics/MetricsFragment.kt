@@ -1,7 +1,6 @@
 package com.buslaev.monitoringcryptocurrency.screens.metrics
 
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.format.DateFormat
 import androidx.fragment.app.Fragment
@@ -20,7 +19,6 @@ import com.buslaev.monitoringcryptocurrency.models.metrics.MetricsResponse
 import com.buslaev.monitoringcryptocurrency.screens.metrics.MetricsFragment.Range.*
 import com.buslaev.monitoringcryptocurrency.utilits.APPLICATION_ACTIVITY
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
-import com.buslaev.monitoringcryptocurrency.utilits.SYMBOL_KEY
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -41,8 +39,7 @@ class MetricsFragment : Fragment() {
     private lateinit var mViewModel: MetricsViewModel
     private lateinit var mObserver: Observer<Resource<MetricsResponse>>
 
-    private lateinit var currentCrypto: Data
-    private val listValues: List<List<Double>> get() = currentCrypto.values
+    private lateinit var mListValues: List<List<Double>>
 
     private lateinit var selectedItemPeriod: TextView
     private var currentChart: Range = MONTH
@@ -81,6 +78,8 @@ class MetricsFragment : Fragment() {
     }
 
     private fun setArgumentsFromCurrentCrypto(cryptoIndicators: CryptoIndicators) {
+        mBinding.metricsTitle.text =
+            cryptoIndicators.title.replaceFirstChar { it.uppercase() } + "(${cryptoIndicators.symbol})"
         mBinding.metricsCurrentPrice.text = cryptoIndicators.price
         mBinding.metricsCurrentPriceChange.text = cryptoIndicators.percent
         mBinding.metricsCurrentPriceChange.setTextColor(cryptoIndicators.colorPercent)
@@ -145,13 +144,24 @@ class MetricsFragment : Fragment() {
 
 
     private fun initChart() {
+        val entries = getEntries()
+        val lineDataSet = getLineDataSet(entries)
+        val lineData = LineData(lineDataSet)
+        setChart(lineData)
+
+    }
+
+    private fun getEntries(): ArrayList<Entry> {
         val entries = ArrayList<Entry>()
         var x = 0F
-        for (item in listValues) {
+        for (item in mListValues) {
             entries.add(Entry(x, item[4].toFloat()))
             x += 1F
         }
+        return entries
+    }
 
+    private fun getLineDataSet(entries: ArrayList<Entry>): LineDataSet {
         val lineDataSet = LineDataSet(entries, "Label")
         lineDataSet.apply {
             color = Color.GREEN
@@ -159,8 +169,10 @@ class MetricsFragment : Fragment() {
             setDrawCircles(false)
             setDrawValues(false)
         }
+        return lineDataSet
+    }
 
-        val lineData = LineData(lineDataSet)
+    private fun setChart(lineData: LineData) {
         mBinding.chart.apply {
             data = lineData
 
@@ -170,7 +182,7 @@ class MetricsFragment : Fragment() {
             xAxis.apply {
                 position = XAxis.XAxisPosition.BOTTOM
                 textColor = Color.WHITE
-                valueFormatter = MyXAxisFormatter(listValues)
+                valueFormatter = MyXAxisFormatter(mListValues)
             }
             legend.isEnabled = false
             description.isEnabled = false
@@ -213,11 +225,8 @@ class MetricsFragment : Fragment() {
             when (response) {
                 is Resource.Success -> {
                     response.data?.let { metricsResponse ->
-                        currentCrypto = metricsResponse.data
+                        mListValues = metricsResponse.data.values
                         initChart()
-                        mBinding.metricsTitle.text =
-                            currentCrypto.name + "(${currentCrypto.symbol})"
-
                     }
                     mBinding.loadingChart.visibility = View.GONE
                 }
