@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.buslaev.monitoringcryptocurrency.MainActivity
 import com.buslaev.monitoringcryptocurrency.R
 import com.buslaev.monitoringcryptocurrency.adapters.CryptoAdapter
 import com.buslaev.monitoringcryptocurrency.databinding.FragmentAllCryptoBinding

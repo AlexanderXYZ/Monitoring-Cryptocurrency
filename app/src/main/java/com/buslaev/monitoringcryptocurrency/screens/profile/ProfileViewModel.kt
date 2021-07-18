@@ -21,7 +21,7 @@ import java.io.IOException
 
 class ProfileViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var cryptoRepository = CryptoRepository(CryptoDatabase(APP_ACTIVITY))
+    private var cryptoRepository = CryptoRepository(CryptoDatabase(getApplication()))
 
     private val _profileData: MutableLiveData<Resource<ProfileResponce>> = MutableLiveData()
     val profileData: LiveData<Resource<ProfileResponce>> get() = _profileData

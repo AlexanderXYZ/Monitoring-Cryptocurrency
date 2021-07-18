@@ -38,7 +38,8 @@
         tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profileFragment_to_allCryptoFragment"
-            app:destination="@id/allCryptoFragment" />
+            app:destination="@id/allCryptoFragment"
+            app:popUpTo="@id/allCryptoFragment" />
     </fragment>
     <fragment
         android:id="@+id/metricsFragment"
@@ -47,7 +48,8 @@
         tools:layout="@layout/fragment_metrics">
         <action
             android:id="@+id/action_metricsFragment_to_allCryptoFragment"
-            app:destination="@id/allCryptoFragment" />
+            app:destination="@id/allCryptoFragment"
+            app:popUpTo="@id/allCryptoFragment" />
     </fragment>
     <fragment
         android:id="@+id/webNewsFragment"

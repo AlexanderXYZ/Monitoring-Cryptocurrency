@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.buslaev.monitoringcryptocurrency.MainActivity
 import com.buslaev.monitoringcryptocurrency.R
 import com.buslaev.monitoringcryptocurrency.adapters.helpedModels.CryptoIndicators
 import com.buslaev.monitoringcryptocurrency.databinding.FragmentMetricsBinding
@@ -18,6 +19,7 @@ import com.buslaev.monitoringcryptocurrency.models.metrics.Data
 import com.buslaev.monitoringcryptocurrency.models.metrics.MetricsResponse
 import com.buslaev.monitoringcryptocurrency.screens.metrics.MetricsFragment.Range.*
 import com.buslaev.monitoringcryptocurrency.utilits.APPLICATION_ACTIVITY
+import com.buslaev.monitoringcryptocurrency.utilits.APP_ACTIVITY
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
@@ -52,6 +54,9 @@ class MetricsFragment : Fragment() {
         return mBinding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

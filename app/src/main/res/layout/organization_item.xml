@@ -9,6 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/black"
         android:padding="6dp">
 
         <LinearLayout
@@ -23,36 +24,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name: "
-                android:textColor="@color/less_black" />
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/profile_organizations_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hypothetical Bitcoin Foundation" />
+                android:textStyle="bold"
+                android:text="Hypothetical Bitcoin Foundation"
+                android:textColor="@color/white" />
         </LinearLayout>
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/profile_organizations_jurisdiction_hidden"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="6dp"-->
-<!--            android:orientation="horizontal"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/profile_organizations_name_hidden">-->
-
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Jurisdiction: "-->
-<!--                android:textColor="@color/less_black" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/profile_organizations_jurisdiction"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Switzerland, Europe" />-->
-<!--        </LinearLayout>-->
 
         <LinearLayout
             android:id="@+id/profile_organizations_description_hidden"
@@ -67,13 +48,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Description: "
-                android:textColor="@color/less_black" />
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/profile_organizations_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="description" />
+                android:text="description"
+                android:textColor="@color/white" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

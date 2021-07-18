@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
         APP_ACTIVITY = this
         APPLICATION_ACTIVITY = application
         setupNav()
-
     }
 
     private fun setupNav() {
@@ -34,19 +33,33 @@ class MainActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.allCryptoFragment -> showBottomNav()
                 R.id.newsFragment -> showBottomNav()
-                R.id.metricsFragment -> hideBottomNav()
-                R.id.profileFragment -> hideBottomNav()
-                R.id.webNewsFragment -> hideBottomNav()
+                R.id.metricsFragment -> {
+                    hideBottomNav()
+                }
+                R.id.profileFragment -> {
+                    hideBottomNav()
+                }
+                R.id.webNewsFragment -> {
+                    hideBottomNav()
+                }
             }
         }
+
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp()
+
     }
 
     private fun showBottomNav() {
         bottom_nav_view.visibility = View.VISIBLE
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     private fun hideBottomNav() {
         bottom_nav_view.visibility = View.GONE
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
 }
