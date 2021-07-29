@@ -11,8 +11,10 @@ import com.buslaev.monitoringcryptocurrency.repository.CryptoRepository
 import com.buslaev.monitoringcryptocurrency.utilits.APPLICATION_ACTIVITY
 import com.buslaev.monitoringcryptocurrency.utilits.APP_ACTIVITY
 import com.buslaev.monitoringcryptocurrency.utilits.REPOSITORY
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     lateinit var navController: NavController

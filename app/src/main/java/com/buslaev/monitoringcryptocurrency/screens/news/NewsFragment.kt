@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -16,16 +17,17 @@ import com.buslaev.monitoringcryptocurrency.databinding.FragmentNewsBinding
 import com.buslaev.monitoringcryptocurrency.models.news.NewsResponse
 import com.buslaev.monitoringcryptocurrency.screens.cryptos.CryptoViewModel
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_all_crypto.*
 import kotlinx.android.synthetic.main.fragment_news.*
 
-
+@AndroidEntryPoint
 class NewsFragment : Fragment() {
 
     private var _binding: FragmentNewsBinding? = null
     private val mBinding get() = _binding!!
 
-    private lateinit var mViewModel: NewsViewModel
+    private val mViewModel: NewsViewModel by viewModels()
 
     private lateinit var mAdapter: NewsAdapter
     private lateinit var mRecyclerView: RecyclerView
@@ -39,11 +41,6 @@ class NewsFragment : Fragment() {
     ): View? {
         _binding = FragmentNewsBinding.inflate(layoutInflater, container, false)
         return mBinding.root
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mViewModel = ViewModelProvider(this).get(NewsViewModel::class.java)
     }
 
     override fun onStart() {

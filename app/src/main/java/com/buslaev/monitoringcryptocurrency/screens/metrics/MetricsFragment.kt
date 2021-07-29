@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.buslaev.monitoringcryptocurrency.MainActivity
@@ -29,16 +30,17 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import kotlin.collections.ArrayList
 
-
+@AndroidEntryPoint
 class MetricsFragment : Fragment() {
 
     private var _binding: FragmentMetricsBinding? = null
     private val mBinding get() = _binding!!
 
-    private lateinit var mViewModel: MetricsViewModel
+    private val mViewModel: MetricsViewModel by viewModels()
     private lateinit var mObserver: Observer<Resource<MetricsResponse>>
 
     private lateinit var mListValues: List<List<Double>>
@@ -54,23 +56,12 @@ class MetricsFragment : Fragment() {
         return mBinding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val cryptoIndicators = arguments?.getSerializable("crypto") as CryptoIndicators
         setArgumentsFromCurrentCrypto(cryptoIndicators)
-
-        mViewModel =
-            ViewModelProvider(
-                this,
-                MetricsViewModelFactory(APPLICATION_ACTIVITY, cryptoIndicators.symbol)
-            ).get(
-                MetricsViewModel::class.java
-            )
+        mViewModel.setCurrentSymbol(cryptoIndicators.symbol)
 
         if (savedInstanceState != null) {
             loadSavedData()

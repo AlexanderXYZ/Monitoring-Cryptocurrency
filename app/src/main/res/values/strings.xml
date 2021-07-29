@@ -27,5 +27,6 @@
     <string name="metrics_period_1y">1Y</string>
     <string name="metrics_period_all">ALL</string>
     <string name="check_internet_connection">Please check your internet connection</string>
+    <string name="favorites_menu">Favorites</string>
 
 </resources>

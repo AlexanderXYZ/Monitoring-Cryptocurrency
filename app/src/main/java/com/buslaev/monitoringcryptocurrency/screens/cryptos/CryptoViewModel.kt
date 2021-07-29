@@ -12,14 +12,19 @@ import com.buslaev.monitoringcryptocurrency.CryptoApplication
 import com.buslaev.monitoringcryptocurrency.db.CryptoDatabase
 import com.buslaev.monitoringcryptocurrency.models.allCrypto.CryptoResponse
 import com.buslaev.monitoringcryptocurrency.repository.CryptoRepository
+import com.buslaev.monitoringcryptocurrency.utilits.NetworkConnectionHelper
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
+import javax.inject.Inject
 
-class CryptoViewModel(application: Application) : AndroidViewModel(application) {
-
-    private var cryptoRepository = CryptoRepository(CryptoDatabase(application))
+@HiltViewModel
+class CryptoViewModel @Inject constructor(
+    private val networkConnectionHelper: NetworkConnectionHelper,
+    private val repository: CryptoRepository
+) : ViewModel() {
 
     private val _allCrypto: MutableLiveData<Resource<CryptoResponse>> = MutableLiveData()
     val allCrypto: LiveData<Resource<CryptoResponse>> get() = _allCrypto
@@ -37,8 +42,8 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
     private suspend fun getSafeAllCrypto() {
         _allCrypto.postValue(Resource.Loading())
         try {
-            if (hasInternetConnection()) {
-                val response = cryptoRepository.getAllCrypto()
+            if (networkConnectionHelper.hasInternetConnection()) {
+                val response = repository.getAllCrypto()
                 _allCrypto.postValue(handleAllCryptoResponse(response))
             } else {
                 _allCrypto.postValue(Resource.Error("No internet connection"))
@@ -59,33 +64,6 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
             }
         }
         return Resource.Error(response.message())
-    }
-
-    private fun hasInternetConnection(): Boolean {
-        val connectivityManager = getApplication<CryptoApplication>().getSystemService(
-            Context.CONNECTIVITY_SERVICE
-        ) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val activeNetwork = connectivityManager.activeNetwork ?: return false
-            val capabilities =
-                connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
-            return when {
-                capabilities.hasTransport(TRANSPORT_WIFI) -> true
-                capabilities.hasTransport(TRANSPORT_CELLULAR) -> true
-                capabilities.hasTransport(TRANSPORT_ETHERNET) -> true
-                else -> false
-            }
-        } else {
-            connectivityManager.activeNetworkInfo?.run {
-                return when (type) {
-                    TYPE_WIFI -> true
-                    TYPE_MOBILE -> true
-                    TYPE_ETHERNET -> true
-                    else -> false
-                }
-            }
-        }
-        return false
     }
 
     fun startUpdatesData() {

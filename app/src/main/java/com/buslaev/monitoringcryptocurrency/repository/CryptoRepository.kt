@@ -1,22 +1,21 @@
 package com.buslaev.monitoringcryptocurrency.repository
 
-import com.buslaev.monitoringcryptocurrency.api.RetrofitInstance
-import com.buslaev.monitoringcryptocurrency.db.CryptoDatabase
+import com.buslaev.monitoringcryptocurrency.api.HelperApi
+import javax.inject.Inject
 
-class CryptoRepository(
-    val database: CryptoDatabase
+class CryptoRepository @Inject constructor(
+    private val helperApi: HelperApi
 ) {
-    private val dao = database.getCryptoDao()
 
-    suspend fun getAllCrypto() = RetrofitInstance.api.getAllCrypto()
+    suspend fun getAllCrypto() = helperApi.getAllCrypto()
 
-    suspend fun getNews() = RetrofitInstance.api.getNews()
+    suspend fun getNews() = helperApi.getNews()
 
-    suspend fun getProfileCrypto(symbol: String) = RetrofitInstance.api.getProfileCrypto(symbol)
+    suspend fun getProfileCrypto(symbol: String) = helperApi.getProfileCrypto(symbol)
 
     suspend fun getMetrics(symbol: String, start: String, end: String, interval: String) =
-        RetrofitInstance.api.getMetrics(symbol, end, start, interval)
+        helperApi.getMetrics(symbol, end, start, interval)
 
     suspend fun getMetricsAll(symbol: String, before: String, interval: String) =
-        RetrofitInstance.api.getMetricsAll(symbol, before, interval)
+        helperApi.getMetricsAll(symbol, before, interval)
 }
