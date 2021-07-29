@@ -1,13 +1,11 @@
 package com.buslaev.monitoringcryptocurrency.screens.news
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,10 +13,9 @@ import com.buslaev.monitoringcryptocurrency.R
 import com.buslaev.monitoringcryptocurrency.adapters.NewsAdapter
 import com.buslaev.monitoringcryptocurrency.databinding.FragmentNewsBinding
 import com.buslaev.monitoringcryptocurrency.models.news.NewsResponse
-import com.buslaev.monitoringcryptocurrency.screens.cryptos.CryptoViewModel
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
+import com.buslaev.monitoringcryptocurrency.viewMoldels.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_all_crypto.*
 import kotlinx.android.synthetic.main.fragment_news.*
 
 @AndroidEntryPoint

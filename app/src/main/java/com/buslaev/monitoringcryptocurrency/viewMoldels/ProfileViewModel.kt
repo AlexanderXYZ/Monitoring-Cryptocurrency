@@ -1,13 +1,13 @@
-package com.buslaev.monitoringcryptocurrency.screens.profile
+package com.buslaev.monitoringcryptocurrency.viewMoldels
 
 import androidx.lifecycle.*
 import com.buslaev.monitoringcryptocurrency.models.profile.ProfileResponce
 import com.buslaev.monitoringcryptocurrency.repository.CryptoRepository
 import com.buslaev.monitoringcryptocurrency.utilits.NetworkConnectionHelper
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
+import com.buslaev.monitoringcryptocurrency.viewMoldels.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val networkConnectionHelper: NetworkConnectionHelper,
     private val repository: CryptoRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _profileData: MutableLiveData<Resource<ProfileResponce>> = MutableLiveData()
     val profileData: LiveData<Resource<ProfileResponce>> get() = _profileData
@@ -29,7 +29,7 @@ class ProfileViewModel @Inject constructor(
         try {
             if (networkConnectionHelper.hasInternetConnection()) {
                 val response = repository.getProfileCrypto(symbol)
-                _profileData.postValue(handleAllCryptoResponse(response))
+                _profileData.postValue(handleResponse(response))
             } else {
                 _profileData.postValue(Resource.Error("No internet connection"))
             }
@@ -39,14 +39,5 @@ class ProfileViewModel @Inject constructor(
                 else -> _profileData.postValue(Resource.Error("Conversion Error"))
             }
         }
-    }
-
-    private fun handleAllCryptoResponse(response: Response<ProfileResponce>): Resource<ProfileResponce> {
-        if (response.isSuccessful) {
-            response.body()?.let { result ->
-                return Resource.Success(result)
-            }
-        }
-        return Resource.Error(response.message())
     }
 }

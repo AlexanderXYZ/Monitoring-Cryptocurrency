@@ -1,13 +1,13 @@
-package com.buslaev.monitoringcryptocurrency.screens.news
+package com.buslaev.monitoringcryptocurrency.viewMoldels
 
 import androidx.lifecycle.*
 import com.buslaev.monitoringcryptocurrency.models.news.NewsResponse
 import com.buslaev.monitoringcryptocurrency.repository.CryptoRepository
 import com.buslaev.monitoringcryptocurrency.utilits.NetworkConnectionHelper
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
+import com.buslaev.monitoringcryptocurrency.viewMoldels.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class NewsViewModel @Inject constructor(
     private val networkConnectionHelper: NetworkConnectionHelper,
     private val repository: CryptoRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _news: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     val news: LiveData<Resource<NewsResponse>> get() = _news
@@ -33,7 +33,7 @@ class NewsViewModel @Inject constructor(
         try {
             if (networkConnectionHelper.hasInternetConnection()) {
                 val response = repository.getNews()
-                _news.postValue(handleNewsResponse(response))
+                _news.postValue(handleResponse(response))
             } else {
                 _news.postValue(Resource.Error("No internet connection"))
             }
@@ -43,14 +43,5 @@ class NewsViewModel @Inject constructor(
                 else -> _news.postValue(Resource.Error("Conversion Error"))
             }
         }
-    }
-
-    private fun handleNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
-        if (response.isSuccessful) {
-            response.body()?.let { result ->
-                return Resource.Success(result)
-            }
-        }
-        return Resource.Error(response.message())
     }
 }

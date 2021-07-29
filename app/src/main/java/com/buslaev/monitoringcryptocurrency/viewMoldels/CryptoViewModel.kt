@@ -1,22 +1,14 @@
-package com.buslaev.monitoringcryptocurrency.screens.cryptos
+package com.buslaev.monitoringcryptocurrency.viewMoldels
 
-import android.app.Application
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.ConnectivityManager.*
-import android.net.NetworkCapabilities.*
-import android.os.Build
 import android.os.CountDownTimer
 import androidx.lifecycle.*
-import com.buslaev.monitoringcryptocurrency.CryptoApplication
-import com.buslaev.monitoringcryptocurrency.db.CryptoDatabase
 import com.buslaev.monitoringcryptocurrency.models.allCrypto.CryptoResponse
 import com.buslaev.monitoringcryptocurrency.repository.CryptoRepository
 import com.buslaev.monitoringcryptocurrency.utilits.NetworkConnectionHelper
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
+import com.buslaev.monitoringcryptocurrency.viewMoldels.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 
@@ -24,7 +16,7 @@ import javax.inject.Inject
 class CryptoViewModel @Inject constructor(
     private val networkConnectionHelper: NetworkConnectionHelper,
     private val repository: CryptoRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _allCrypto: MutableLiveData<Resource<CryptoResponse>> = MutableLiveData()
     val allCrypto: LiveData<Resource<CryptoResponse>> get() = _allCrypto
@@ -44,7 +36,7 @@ class CryptoViewModel @Inject constructor(
         try {
             if (networkConnectionHelper.hasInternetConnection()) {
                 val response = repository.getAllCrypto()
-                _allCrypto.postValue(handleAllCryptoResponse(response))
+                _allCrypto.postValue(handleResponse(response))
             } else {
                 _allCrypto.postValue(Resource.Error("No internet connection"))
             }
@@ -54,16 +46,6 @@ class CryptoViewModel @Inject constructor(
                 else -> _allCrypto.postValue(Resource.Error("Conversion Error"))
             }
         }
-    }
-
-
-    private fun handleAllCryptoResponse(response: Response<CryptoResponse>): Resource<CryptoResponse> {
-        if (response.isSuccessful) {
-            response.body()?.let { result ->
-                return Resource.Success(result)
-            }
-        }
-        return Resource.Error(response.message())
     }
 
     fun startUpdatesData() {

@@ -1,13 +1,15 @@
-package com.buslaev.monitoringcryptocurrency.screens.metrics
+package com.buslaev.monitoringcryptocurrency.viewMoldels
 
 
 import android.os.Build
 import androidx.lifecycle.*
 import com.buslaev.monitoringcryptocurrency.models.metrics.MetricsResponse
 import com.buslaev.monitoringcryptocurrency.repository.CryptoRepository
+import com.buslaev.monitoringcryptocurrency.screens.metrics.MetricsFragment
 import com.buslaev.monitoringcryptocurrency.screens.metrics.MetricsFragment.Range.*
 import com.buslaev.monitoringcryptocurrency.utilits.NetworkConnectionHelper
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
+import com.buslaev.monitoringcryptocurrency.viewMoldels.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -20,7 +22,7 @@ import javax.inject.Inject
 class MetricsViewModel @Inject constructor(
     private val networkConnectionHelper: NetworkConnectionHelper,
     private val repository: CryptoRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _metrics: MutableLiveData<Resource<MetricsResponse>> = MutableLiveData()
     val metrics: LiveData<Resource<MetricsResponse>> get() = _metrics
@@ -47,7 +49,7 @@ class MetricsViewModel @Inject constructor(
         try {
             if (networkConnectionHelper.hasInternetConnection()) {
                 val response = getResponseWithParameters(range)
-                _metrics.postValue(handleMetricsResponse(response))
+                _metrics.postValue(handleResponse(response))
             } else {
                 _metrics.postValue(Resource.Error("No internet connection"))
             }
@@ -81,15 +83,6 @@ class MetricsViewModel @Inject constructor(
         } else {
             repository.getMetrics(symbol, startDate, endDate, defaultInterval)
         }
-    }
-
-    private fun handleMetricsResponse(response: Response<MetricsResponse>): Resource<MetricsResponse> {
-        if (response.isSuccessful) {
-            response.body()?.let { result ->
-                return Resource.Success(result)
-            }
-        }
-        return Resource.Error(response.message())
     }
 
 }

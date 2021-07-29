@@ -11,13 +11,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.buslaev.monitoringcryptocurrency.adapters.OrganizationAdapter
 import com.buslaev.monitoringcryptocurrency.databinding.FragmentProfileBinding
 import com.buslaev.monitoringcryptocurrency.models.profile.Data
 import com.buslaev.monitoringcryptocurrency.models.profile.ProfileResponce
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
 import com.buslaev.monitoringcryptocurrency.utilits.SYMBOL_KEY
+import com.buslaev.monitoringcryptocurrency.viewMoldels.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

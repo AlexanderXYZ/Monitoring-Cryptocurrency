@@ -1,24 +1,19 @@
 package com.buslaev.monitoringcryptocurrency.screens.cryptos
 
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.buslaev.monitoringcryptocurrency.MainActivity
 import com.buslaev.monitoringcryptocurrency.R
 import com.buslaev.monitoringcryptocurrency.adapters.CryptoAdapter
 import com.buslaev.monitoringcryptocurrency.databinding.FragmentAllCryptoBinding
 import com.buslaev.monitoringcryptocurrency.models.allCrypto.CryptoResponse
-import com.buslaev.monitoringcryptocurrency.models.allCrypto.Data
 import com.buslaev.monitoringcryptocurrency.utilits.Resource
+import com.buslaev.monitoringcryptocurrency.viewMoldels.CryptoViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_all_crypto.*
 
 @AndroidEntryPoint
 class AllCryptoFragment : Fragment(){
